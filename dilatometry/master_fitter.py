@@ -138,7 +138,7 @@ global err_maximum_transformation_WF, Bs_master_dic, Ms_master_dic, MF_dic
 #solver settings
 
 optimize='yes'# It tells the program to optimize or just plot using the parameters provided.yes / no
-show_plots='no'
+show_plots='yes'
 open_excel_result='no'
 interval=8
 
@@ -147,22 +147,22 @@ end_fit_WF=1
 overal_fit_WF=7
 err_end_slop_WF=1
 err_maximum_transformation_WF=2.0
-maximize_fraction_transformed='yes' #'yes' and 'y' will trigger maximizing transformation cost factor. Becareful with use of this. It may create incorrect lattice parameters.
+maximize_fraction_transformed='no' #'yes' and 'y' will trigger maximizing transformation cost factor. Becareful with use of this. It may create incorrect lattice parameters.
 #use maximization with caution. this is a tool to get close to the final solution. However if your final solution relies on maximization to be on, your solution might not be correct. 
 sr=7
 reg_order=3 
 
 
 correct_L0='no'
-L0_correction_method=3  # 1 for CTE matching which calculates correction to make all CTEs equal to average CTE.
+L0_correction_method=2  # 1 for CTE matching which calculates correction to make all CTEs equal to average CTE.
                         # 2 for strain matching which matches the strain at austenitization for all of the samples to average starin. 
                         # 3 for normalizing all data to a strain at user defined temperature during cooling.                        
                         # Method 2 is a better method for solid samples as temperature gradient during cooling can effect CTE differently depending on the cooling rate 
-normalizing_temp=895    # Only used for method 3 of L0_correction.
+normalizing_temp=1050    # Only used for method 3 of L0_correction.
 use_avr_CTE_product=0   # 1 for yes 0 for no. Setting to zero will ignore user provided values and will calculate  
 
 Bs_model=1 # can be 1 for imperical and 2 for t zero method (model 2 only works for Nasseh's x80)
-Ms_model=3 # can be 1 for Andrews1, 2 for Andrews 2, 3 for Capdevilla, 4 for interaction model Jiajun Wang
+Ms_model=5 # can be 1 for Andrews1, 2 for Andrews 2, 3 for Capdevilla, 4 for interaction model Jiajun Wang, 5 Model from Finkler 8-14Cr Steels
 SSF_method="general" # can be user or genral. general assumes  linear increase of SSF from LBs to Ms, from SSF=0 to SSF=1, User defined is polynomial. 
 use_XRD_for_a0_alpha='no' #yes overrides user defined value for a0_alpha and calculates a value based of literature.
 
@@ -230,14 +230,24 @@ CTE_alpha_c=  1.447784602452986546928907773957e-05
 c_wf_for_cte= 2.264840797522926557280853465670e-04
 c_wf_for_a0=  2.415339043003560110178370593961e-12
 
-a0_gama =     3.626719236158765026747042479566e-10
-a0_alpha=     2.858900589399978138915148190942e-10
+a0_gama =     3.61e-10
+a0_alpha=     2.8800e-10
 CTE_alpha_a=  -1.092820881203190065416997505058e-11
 CTE_alpha_b=  5.630826749228290410272357676595e-09
 CTE_alpha_c=  1.453226310732502250225479933921e-05
 c_wf_for_cte= 2.283598276996781379494239061501e-04
 c_wf_for_a0=  2.423420727527992998844934955897e-12
 
+a0_gama =     3.609999999999999941527185363173e-10
+a0_alpha=     2.879999999999999877450059816551e-10
+CTE_alpha_a=  -1.092820881203190065416997505058e-11
+CTE_alpha_b=  5.630826749228290410272357676595e-09
+CTE_alpha_c=  1.453226310732502250225479933921e-05
+c_wf_for_cte= 2.283598276996781379494239061501e-04
+c_wf_for_a0=  2.423420727527992998844934955897e-12
+#Values from Rietveld refinement for high cooling rates for P91 steel
+a0_gama =     3.6057e-10
+a0_alpha=     2.8863e-10
 
 x0_param_names=[]
 x0_param_vals=[]
@@ -577,6 +587,8 @@ def Ms(C):# C is in mole fraction ref http://www.lucefin.com/en/siderurgia/area-
             Ms=540-584.9*C-23.1*Si-117.7*Mn-42.5*Cr+49.9*Mo-62.5*sqrt(C*Si)+178.3*sqrt(C*Mn)\
             -10*sqrt(C*Cr)+52.5*sqrt(C*Mo)+117.2*sqrt(Si*Mn)+50.9*sqrt(Si*Cr)-142.2*sqrt(Si*Mo)\
             -29.2*sqrt(Mn*Cr)-9.7*sqrt(Mn*Mo)+69.9*sqrt(Cr*Mo)
+        elif Ms_model==5:
+            Ms=635-474*C-(17*Cr+33*Mn+21*Mo+17*Ni) #Ms=635-474*(C+0.86*(N-0.15*(Nb+Zr)-0.066*(Ta+Hf)))-(17*Cr+33*Mn+21*Mo+17*Ni+39V+11W)
         else:
             pass
         Ms_temp_dic[strC]=Ms

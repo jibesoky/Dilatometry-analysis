@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 import pickle
-import data_set_conditioner
+# import data_set_conditioner
 
 current_dir=os.getcwd()
 file_list=pickle.load(open(current_dir+'/working_directory/file_list_conditioned.pkl','rb'))
@@ -26,6 +26,6 @@ for k in range(len(file_list)):
     plt.xlabel('Temperature (C)')
     plt.ylabel('Dilation (micron)')
     xy=list(zip(temp_master[k],dil_master[k]))
-    for i in range(200):    
-        plt.annotate(i*len(xy)//200,(temp_master[k][i*len(xy)//200],dil_master[k][i*len(xy)//200]))
+    for i in range(100):    
+        plt.annotate(i*len(xy)//100,(temp_master[k][i*len(xy)//100],dil_master[k][i*len(xy)//100]))
     

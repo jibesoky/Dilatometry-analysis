@@ -20,7 +20,7 @@ from os.path import exists, join
 #each line in the set file is like this:
 #filename,Aus_min_row,Aus_max_row,fer_min_row,fer_max_row,L0,cementite conditions,
 #values must be separated by comma "," and all lines must end with a comma.
-make_raw_data_plots = False
+make_raw_data_plots = True
 raw_data_dir = 'raw_dil_data'
 file_list=[]
 d=open('master_setup.txt','r')
